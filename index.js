@@ -11,7 +11,12 @@ connectDB();
 const app = express();
 
 // Define allowed origins
-const allowedOrigins = ["http://localhost:5173", "https://chatlcu.vercel.app"]; // Add your frontend URLs here
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5173/",
+  "https://chatlcu.vercel.app",
+  "https://chatlcu.vercel.app/",
+]; // Add your frontend URLs here
 
 app.use(
   cors({
