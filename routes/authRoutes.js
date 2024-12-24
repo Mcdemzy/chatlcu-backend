@@ -1,9 +1,13 @@
 const express = require("express");
-const { login, signup } = require("../controllers/authController");
-
 const router = express.Router();
 
-router.post("/login", login);
-router.post("/signup", signup);
+// Example routes
+router.post("/signup", (req, res) => {
+  res.send("Signup route");
+});
 
-module.exports = router.handler; // Export the handler for Vercel
+router.post("/login", (req, res) => {
+  res.send("Login route");
+});
+
+module.exports = router;
