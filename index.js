@@ -9,13 +9,37 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// Define allowed origins
+const allowedOrigins = [
+  "http://localhost:5173", // Replace with your local frontend URL if necessary
+  "https://chatlcu.vercel.app", // Your deployed frontend URL
+];
+
+// Configure CORS middleware
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps, curl requests)
+      if (!origin) return callback(null, true);
+
+      // Check if the origin is in the allowed list
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
+// Middleware to parse JSON
 app.use(bodyParser.json());
 
-// Serve API routes
+// API Routes
 app.use("/api/auth", authRoutes);
 
-// Handle default route
+// Default route
 app.get("/", (req, res) => {
   res.send("Welcome to the ChatLCU Backend API!");
 });
