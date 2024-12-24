@@ -11,25 +11,20 @@ connectDB();
 const app = express();
 
 // Define allowed origins
-const allowedOrigins = [
-  "http://localhost:5173", // Replace with your local frontend URL if necessary
-  "https://chatlcu.vercel.app", // Your deployed frontend URL
-];
+const allowedOrigins = ["http://localhost:5173", "https://chatlcu.vercel.app"]; // Add your frontend URLs here
 
-// Configure CORS middleware
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g., mobile apps, curl requests)
-      if (!origin) return callback(null, true);
-
-      // Check if the origin is in the allowed list
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+      // Allow requests from whitelisted origins or no origin (e.g., mobile apps, Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
       } else {
-        return callback(new Error("Not allowed by CORS"));
+        callback(new Error("Not allowed by CORS"));
       }
     },
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
 
