@@ -9,7 +9,25 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// Define allowed origins
+const allowedOrigins = ["http://localhost:5173", "https://chatlcu.vercel.app"];
+
+// Configure CORS middleware
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 
 // Serve API routes
